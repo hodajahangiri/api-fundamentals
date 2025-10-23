@@ -142,7 +142,7 @@ def get_activity_by_participants():
     except requests.exceptions.RequestException as e:
         console.print(f"[red]An error occurred during the request: {e}")
 
-def save_favorite_activity(new_data):
+def save_favorite_activity(new_data = None):
     """
     Get an activity and save it to a text file
     """
@@ -151,6 +151,18 @@ def save_favorite_activity(new_data):
     # 2. Ask user if they want to save it
     # Specify the filename
     filename = 'favorite_activities.json'
+    '''User can add an activity by himself to add to his favorite list'''
+    if new_data is None:
+        activity = input("Enter your activity: ")
+        activity_type = input("Enter your activity type, you can pick from (education, recreational, social, charity, cooking, relaxation, busywork): ")
+        activity_Participants = input("How many participants(1,2,3,4,5,6,or 8)?" )
+        new_data = {
+            "activity" : activity,
+            "type" : activity_type,
+            "participants" : activity_Participants
+        }
+        show_activity(new_data,"My Activity")
+
     while True:
         choice = input("Do you want to save this activity to your favorite? yes/no ")
         if choice.lower() == "yes":
@@ -220,9 +232,9 @@ def show_menu():
     console.print("[blue]1.[/blue] Get a random activity")
     console.print("[blue]2.[/blue] Get activity by type")
     console.print("[blue]3.[/blue] Get activity by participants")
-    # console.print("[blue]4.[/blue] Save my favorite activities")
-    console.print("[blue]4.[/blue] View my saved activities")
-    console.print("[blue]5.[/blue] Exit")
+    console.print("[blue]4.[/blue] Save my favorite activities")
+    console.print("[blue]5.[/blue] View my saved activities")
+    console.print("[blue]6.[/blue] Exit")
 
 
 # show the result
@@ -243,22 +255,22 @@ def main():
     while True:
         show_menu()
         try:
-            choice = input("\nChoose an option (1-5): ")
+            choice = input("\nChoose an option (1-6): ")
             if choice == '1':
                 get_random_activity()
             elif choice == '2':
                 get_activity_by_type()
             elif choice == '3':
                 get_activity_by_participants()
-            # elif choice == '4':
-            #     save_favorite_activity()
             elif choice == '4':
-                view_saved_activities()
+                save_favorite_activity()
             elif choice == '5':
+                view_saved_activities()
+            elif choice == '6':
                 console.print("[blue]Thanks for using Bored Activity Finder!")
                 break     
             else:
-                console.print("[red]Invalid choice! Please choose 1-5.")
+                console.print("[red]Invalid choice! Please choose 1-6.")
         except KeyboardInterrupt:
             print("\n\nGoodbye!")
             break
